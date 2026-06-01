@@ -1,0 +1,48 @@
+# Credentials & secrets
+*.env
+.env
+.env.*
+local.settings.json
+*credentials*
+*secrets*
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.Python
+*.egg-info/
+dist/
+build/
+
+# Data files (too large for Git — use ADLS)
+data/raw/
+data/processed/
+*.parquet
+*.csv
+!data/sample/generate_sample_data.py
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Power BI (binary — use .pbip format for source control)
+*.pbix
+
+# Azure artifacts (generated)
+*.azuredeploy.parameters.json
+arm-template-output.json
+
+# IDE
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db

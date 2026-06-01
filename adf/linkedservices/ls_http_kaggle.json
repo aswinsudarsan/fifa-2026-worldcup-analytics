@@ -1,0 +1,23 @@
+{
+  "name": "ls_http_kaggle",
+  "type": "Microsoft.DataFactory/factories/linkedservices",
+  "properties": {
+    "type": "HttpServer",
+    "description": "HTTP linked service for downloading Kaggle datasets",
+    "typeProperties": {
+      "url": "https://www.kaggle.com",
+      "enableServerCertificateValidation": true,
+      "authenticationType": "Basic",
+      "userName": {
+        "type": "AzureKeyVaultSecret",
+        "store": { "referenceName": "ls_key_vault", "type": "LinkedServiceReference" },
+        "secretName": "kaggle-username"
+      },
+      "password": {
+        "type": "AzureKeyVaultSecret",
+        "store": { "referenceName": "ls_key_vault", "type": "LinkedServiceReference" },
+        "secretName": "kaggle-api-key"
+      }
+    }
+  }
+}

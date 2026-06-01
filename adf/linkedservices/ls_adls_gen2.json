@@ -1,0 +1,24 @@
+{
+  "name": "ls_adls_gen2",
+  "type": "Microsoft.DataFactory/factories/linkedservices",
+  "properties": {
+    "type": "AzureBlobFS",
+    "description": "Linked service to ADLS Gen2 for FIFA 2026 data lake",
+    "typeProperties": {
+      "url": "https://@{linkedService().storageAccountName}.dfs.core.windows.net/",
+      "accountKey": {
+        "type": "AzureKeyVaultSecret",
+        "store": {
+          "referenceName": "ls_key_vault",
+          "type": "LinkedServiceReference"
+        },
+        "secretName": "adls-account-key"
+      }
+    },
+    "parameters": {
+      "storageAccountName": {
+        "type": "string"
+      }
+    }
+  }
+}

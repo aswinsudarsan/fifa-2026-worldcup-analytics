@@ -1,0 +1,194 @@
+{
+  "name": "pl_ingest_raw_data",
+  "properties": {
+    "description": "Master ingestion pipeline: downloads FIFA datasets from Kaggle/HTTP and lands them in ADLS Gen2 raw zone",
+    "activities": [
+      {
+        "name": "ingest_match_results",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": {
+              "type": "HttpReadSettings",
+              "requestMethod": "GET"
+            },
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            }
+          },
+          "sink": {
+            "type": "ParquetSink",
+            "storeSettings": {
+              "type": "AzureBlobFSWriteSettings"
+            }
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "ds_http_csv_matches",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "ds_adls_parquet_raw",
+            "type": "DatasetReference",
+            "parameters": {
+              "container": "raw",
+              "folder": "fifa_matches",
+              "filename": {
+                "value": "@concat('matches_', formatDateTime(utcNow(), 'yyyyMMdd'), '.parquet')",
+                "type": "Expression"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "ingest_fifa_rankings",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": { "type": "HttpReadSettings", "requestMethod": "GET" },
+            "formatSettings": { "type": "DelimitedTextReadSettings" }
+          },
+          "sink": {
+            "type": "ParquetSink",
+            "storeSettings": { "type": "AzureBlobFSWriteSettings" }
+          }
+        },
+        "inputs": [{ "referenceName": "ds_http_csv_rankings", "type": "DatasetReference" }],
+        "outputs": [
+          {
+            "referenceName": "ds_adls_parquet_raw",
+            "type": "DatasetReference",
+            "parameters": {
+              "container": "raw",
+              "folder": "fifa_rankings",
+              "filename": {
+                "value": "@concat('rankings_', formatDateTime(utcNow(), 'yyyyMMdd'), '.parquet')",
+                "type": "Expression"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "ingest_player_stats",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.02:00:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 60
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": { "type": "HttpReadSettings", "requestMethod": "GET" },
+            "formatSettings": { "type": "DelimitedTextReadSettings" }
+          },
+          "sink": {
+            "type": "ParquetSink",
+            "storeSettings": { "type": "AzureBlobFSWriteSettings" }
+          }
+        },
+        "inputs": [{ "referenceName": "ds_http_csv_players", "type": "DatasetReference" }],
+        "outputs": [
+          {
+            "referenceName": "ds_adls_parquet_raw",
+            "type": "DatasetReference",
+            "parameters": {
+              "container": "raw",
+              "folder": "player_stats",
+              "filename": {
+                "value": "@concat('players_', formatDateTime(utcNow(), 'yyyyMMdd'), '.parquet')",
+                "type": "Expression"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "trigger_bronze_notebook",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          { "activity": "ingest_match_results", "dependencyConditions": ["Succeeded"] },
+          { "activity": "ingest_fifa_rankings", "dependencyConditions": ["Succeeded"] },
+          { "activity": "ingest_player_stats", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "notebook": {
+            "referenceName": "01_bronze_ingestion",
+            "type": "NotebookReference"
+          },
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@formatDateTime(utcNow(), 'yyyy-MM-dd')",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sparkPool": {
+            "referenceName": "sparkfifa2026",
+            "type": "BigDataPoolReference"
+          }
+        }
+      },
+      {
+        "name": "on_failure_alert",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "trigger_bronze_notebook", "dependencyConditions": ["Failed"] }
+        ],
+        "typeProperties": {
+          "url": {
+            "value": "@pipeline().parameters.alertWebhookUrl",
+            "type": "Expression"
+          },
+          "method": "POST",
+          "body": {
+            "value": "@concat('{\"text\": \"Pipeline FAILED: ', pipeline().Pipeline, ' at ', utcNow(), '\"}')",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "alertWebhookUrl": {
+        "type": "string",
+        "defaultValue": "https://hooks.example.com/alert"
+      }
+    },
+    "variables": {
+      "ingestionDate": {
+        "type": "String"
+      }
+    },
+    "annotations": ["FIFA2026", "Ingestion", "Bronze"],
+    "folder": {
+      "name": "FIFA2026/Ingestion"
+    }
+  }
+}

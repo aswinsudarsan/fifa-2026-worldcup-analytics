@@ -1,0 +1,154 @@
+{
+  "name": "pl_master_fifa2026",
+  "properties": {
+    "description": "Master orchestration pipeline: Ingest → Bronze → Silver → Gold → ML → SQL Pool load",
+    "activities": [
+      {
+        "name": "stage_1_ingest_raw",
+        "type": "ExecutePipeline",
+        "dependsOn": [],
+        "typeProperties": {
+          "pipeline": { "referenceName": "pl_ingest_raw_data", "type": "PipelineReference" },
+          "waitOnCompletion": true
+        }
+      },
+      {
+        "name": "stage_2_bronze",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          { "activity": "stage_1_ingest_raw", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "notebook": { "referenceName": "01_bronze_ingestion", "type": "NotebookReference" },
+          "sparkPool": { "referenceName": "sparkfifa2026", "type": "BigDataPoolReference" }
+        }
+      },
+      {
+        "name": "stage_3_silver",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          { "activity": "stage_2_bronze", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "notebook": { "referenceName": "02_silver_transformation", "type": "NotebookReference" },
+          "sparkPool": { "referenceName": "sparkfifa2026", "type": "BigDataPoolReference" }
+        }
+      },
+      {
+        "name": "stage_4_gold",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          { "activity": "stage_3_silver", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "notebook": { "referenceName": "03_gold_aggregation", "type": "NotebookReference" },
+          "sparkPool": { "referenceName": "sparkfifa2026", "type": "BigDataPoolReference" }
+        }
+      },
+      {
+        "name": "stage_5a_ml_model",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          { "activity": "stage_4_gold", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "notebook": { "referenceName": "04_ml_prediction_model", "type": "NotebookReference" },
+          "sparkPool": { "referenceName": "sparkfifa2026", "type": "BigDataPoolReference" }
+        }
+      },
+      {
+        "name": "stage_5b_live_scores",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          { "activity": "stage_4_gold", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "notebook": { "referenceName": "05_synapse_link_live_scores", "type": "NotebookReference" },
+          "sparkPool": { "referenceName": "sparkfifa2026", "type": "BigDataPoolReference" }
+        }
+      },
+      {
+        "name": "stage_6_load_sql_pool",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          { "activity": "stage_5a_ml_model",     "dependencyConditions": ["Succeeded"] },
+          { "activity": "stage_5b_live_scores",  "dependencyConditions": ["Succeeded", "Failed"] }
+        ],
+        "typeProperties": {
+          "storedProcedureName": "reporting.usp_run_full_load"
+        },
+        "linkedServiceName": {
+          "referenceName": "ls_synapse_sql_pool",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "stage_7_dq_checks",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          { "activity": "stage_6_load_sql_pool", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "storedProcedureName": "reporting.usp_run_dq_checks"
+        },
+        "linkedServiceName": {
+          "referenceName": "ls_synapse_sql_pool",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "notify_success",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "stage_7_dq_checks", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "url": "@pipeline().parameters.teamsWebhookUrl",
+          "method": "POST",
+          "body": {
+            "value": "@concat('{\"text\": \"✅ FIFA 2026 Pipeline completed successfully at ', utcNow(), '\"}')",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "notify_failure",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "stage_5a_ml_model",    "dependencyConditions": ["Failed"] },
+          { "activity": "stage_6_load_sql_pool", "dependencyConditions": ["Failed"] }
+        ],
+        "typeProperties": {
+          "url": "@pipeline().parameters.teamsWebhookUrl",
+          "method": "POST",
+          "body": {
+            "value": "@concat('{\"text\": \"❌ FIFA 2026 Pipeline FAILED: ', pipeline().RunId, '\"}')",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "teamsWebhookUrl": {
+        "type": "string",
+        "defaultValue": "https://outlook.office.com/webhook/..."
+      }
+    },
+    "triggers": [
+      {
+        "name": "daily_trigger",
+        "type": "ScheduleTrigger",
+        "typeProperties": {
+          "recurrence": {
+            "frequency": "Day",
+            "interval": 1,
+            "startTime": "2026-01-01T02:00:00Z",
+            "timeZone": "UTC"
+          }
+        }
+      }
+    ],
+    "annotations": ["FIFA2026", "Master", "Orchestration"],
+    "folder": { "name": "FIFA2026" }
+  }
+}

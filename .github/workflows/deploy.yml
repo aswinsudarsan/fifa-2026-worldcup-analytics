@@ -1,0 +1,149 @@
+name: FIFA 2026 - Deploy Azure Artifacts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  AZURE_RESOURCE_GROUP: rg-fifa2026
+  ADF_NAME:             adf-fifa2026-dev
+  SYNAPSE_WORKSPACE:    synapse-fifa2026-dev
+
+jobs:
+  # ── Validate Bicep templates ─────────────────────────────────────────────────
+  validate-infra:
+    name: Validate Bicep Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Install Bicep CLI
+        run: az bicep install
+
+      - name: Lint Bicep files
+        run: |
+          az bicep lint --file infrastructure/bicep/main.bicep
+          az bicep lint --file infrastructure/bicep/synapse.bicep
+          az bicep lint --file infrastructure/bicep/adls.bicep
+          az bicep lint --file infrastructure/bicep/cosmos.bicep
+
+      - name: What-if deployment (dry run)
+        run: |
+          az deployment group what-if \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --template-file infrastructure/bicep/main.bicep \
+            --parameters sqlAdminPassword=${{ secrets.SQL_ADMIN_PASSWORD }}
+
+  # ── Validate Python notebooks ────────────────────────────────────────────────
+  lint-notebooks:
+    name: Lint PySpark Notebooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install linters
+        run: pip install flake8 pylint
+
+      - name: Flake8 lint
+        run: |
+          flake8 synapse/notebooks/ \
+            --max-line-length=120 \
+            --ignore=E501,W503,E402 \
+            --statistics
+
+  # ── Deploy ADF pipelines ─────────────────────────────────────────────────────
+  deploy-adf:
+    name: Deploy ADF Pipelines
+    needs: [validate-infra, lint-notebooks]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy ADF Linked Services
+        run: |
+          for f in adf/linkedservices/*.json; do
+            name=$(basename "$f" .json)
+            echo "Deploying linked service: $name"
+            az datafactory linked-service create \
+              --factory-name ${{ env.ADF_NAME }} \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --name "$name" \
+              --properties @"$f" || echo "Warning: $name deployment skipped"
+          done
+
+      - name: Deploy ADF Pipelines
+        run: |
+          for f in adf/pipelines/*.json; do
+            name=$(basename "$f" .json)
+            echo "Deploying pipeline: $name"
+            az datafactory pipeline create \
+              --factory-name ${{ env.ADF_NAME }} \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --name "$name" \
+              --pipeline @"$f" || echo "Warning: $name deployment skipped"
+          done
+
+  # ── Deploy Synapse artifacts ─────────────────────────────────────────────────
+  deploy-synapse:
+    name: Deploy Synapse Notebooks & Pipelines
+    needs: [validate-infra, lint-notebooks]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Synapse Notebooks
+        run: |
+          for f in synapse/notebooks/*.py; do
+            name=$(basename "$f" .py)
+            echo "Uploading notebook: $name"
+            az synapse notebook import \
+              --workspace-name ${{ env.SYNAPSE_WORKSPACE }} \
+              --name "$name" \
+              --file @"$f" \
+              --spark-pool-name sparkfifa2026 \
+              --executor-size Medium \
+              --executor-count 2 || echo "Warning: $name upload skipped"
+          done
+
+      - name: Deploy Synapse Pipelines
+        run: |
+          az synapse pipeline create \
+            --workspace-name ${{ env.SYNAPSE_WORKSPACE }} \
+            --name pl_master_fifa2026 \
+            --file @synapse/pipelines/master_pipeline.json
+
+  # ── Security scan ─────────────────────────────────────────────────────────────
+  security-scan:
+    name: Credential & Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect secrets (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
