@@ -1,0 +1,62 @@
+table gold_wc2026_predictions
+	lineageTag: 61a0dd4b-76e2-4f07-8120-bc6ab1d58b80
+
+	measure 'Total WC Groups' = DISTINCTCOUNT(gold_wc2026_predictions[group])
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m010-total-groups
+
+	measure 'Total Fixtures' = COUNTROWS(gold_wc2026_predictions)
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m011-total-fixtures
+
+	column group
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 0fd2a0e2-02a1-4f08-97b1-4b25161792da
+		summarizeBy: none
+		sourceColumn: group
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_team
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: f3897f66-e777-490a-8515-667346181799
+		summarizeBy: none
+		sourceColumn: home_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column away_team
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 26c9c80d-c8c0-4a33-912c-d97c7fc4e5e4
+		summarizeBy: none
+		sourceColumn: away_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column predicted_outcome
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 00da6dae-e980-435e-80cf-dcb55ff67d5c
+		summarizeBy: none
+		sourceColumn: predicted_outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_wc2026_predictions = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-47da612b-138b.cloud.databricks.com", "/sql/1.0/warehouses/6de7196b84c83abb", [Catalog=null, Database=null, QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation="2.0", MetricViewBiCompatibilityMode=null]),
+				    workspace_Database = Source{[Name="workspace",Kind="Database"]}[Data],
+				    default_Schema = workspace_Database{[Name="default",Kind="Schema"]}[Data],
+				    gold_wc2026_predictions_Table = default_Schema{[Name="gold_wc2026_predictions",Kind="Table"]}[Data]
+				in
+				    gold_wc2026_predictions_Table
+
+	annotation PBI_ResultType = Table
+

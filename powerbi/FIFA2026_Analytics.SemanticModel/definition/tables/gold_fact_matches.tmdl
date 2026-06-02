@@ -1,0 +1,293 @@
+table gold_fact_matches
+	lineageTag: cad4b7ca-a2a9-4398-ad67-99853d27db9d
+
+	measure 'Total Matches' = COUNTROWS(gold_fact_matches)
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m001-total-matches
+
+	measure 'Total Goals' = SUM(gold_fact_matches[total_goals])
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m002-total-goals
+
+	measure 'Avg Goals Per Match' = AVERAGE(gold_fact_matches[total_goals])
+		formatString: 0.00
+		displayFolder: KPIs
+		lineageTag: m003-avg-goals
+
+	measure 'Home Win %' = DIVIDE(CALCULATE(COUNTROWS(gold_fact_matches), gold_fact_matches[result]="HOME_WIN"), COUNTROWS(gold_fact_matches), 0)
+		formatString: 0.0%
+		displayFolder: KPIs
+		lineageTag: m004-home-win-pct
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c917245d-fd70-4c89-a9d0-e2603057792e
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c86bfdaf-4415-4df2-a7fc-935eb5d60ed9
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column tournament
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ea81b839-0be6-4ee3-89e3-d2eda34fe858
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_team
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aa7f4b68-d605-4540-bbac-cd73cdd16a53
+		summarizeBy: none
+		sourceColumn: home_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column away_team
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: f406b2dc-0229-4f6b-b9d4-4f4ef6ffae68
+		summarizeBy: none
+		sourceColumn: away_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 851d1b7e-6e57-4c55-8e69-583edcbd9e30
+		summarizeBy: sum
+		sourceColumn: home_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column away_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4e7132ba-0311-47f7-8c7a-5c344250768b
+		summarizeBy: sum
+		sourceColumn: away_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column result
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ba76179b-26d6-4d16-b4ca-9f5c6131f4f8
+		summarizeBy: none
+		sourceColumn: result
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_goals
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b037e771-f20f-416b-b002-97f98e060c64
+		summarizeBy: sum
+		sourceColumn: total_goals
+
+		annotation SummarizationSetBy = Automatic
+
+	column neutral
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 77af7969-026d-484e-80cf-9743684797d7
+		summarizeBy: none
+		sourceColumn: neutral
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_fifa_rank
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 396ac26d-6cc7-4375-9511-6393d00dec0e
+		summarizeBy: sum
+		sourceColumn: home_fifa_rank
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column away_fifa_rank
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 5fd8ab61-ea5f-416e-9685-8a0a95d43784
+		summarizeBy: sum
+		sourceColumn: away_fifa_rank
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rank_diff
+		dataType: double
+		sourceProviderType: double
+		lineageTag: ed58c036-5176-4e29-9ead-d71f1b544490
+		summarizeBy: sum
+		sourceColumn: rank_diff
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column points_diff
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 46c7f69e-5e63-44b0-85d4-c700638f79d9
+		summarizeBy: sum
+		sourceColumn: points_diff
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column home_form_pts_last5
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 42717a3f-20e9-4b75-87d1-986a701b1cf8
+		summarizeBy: sum
+		sourceColumn: home_form_pts_last5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column away_form_pts_last5
+		dataType: double
+		sourceProviderType: double
+		lineageTag: df5d2cac-18ce-460e-8b28-1d816e31d2b3
+		summarizeBy: sum
+		sourceColumn: away_form_pts_last5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column home_form_pts_last10
+		dataType: double
+		sourceProviderType: double
+		lineageTag: f0995e5e-6aa1-4bad-85e5-3e73550c5908
+		summarizeBy: sum
+		sourceColumn: home_form_pts_last10
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column away_form_pts_last10
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 26981251-8af8-4d9b-8675-ede4be08d810
+		summarizeBy: sum
+		sourceColumn: away_form_pts_last10
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column home_avg_gf_last5
+		dataType: double
+		sourceProviderType: double
+		lineageTag: f82b61c0-6124-4561-9385-287b0f409080
+		summarizeBy: sum
+		sourceColumn: home_avg_gf_last5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column away_avg_gf_last5
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 0257dbbd-e192-4dbd-ac83-174232f4b0bb
+		summarizeBy: sum
+		sourceColumn: away_avg_gf_last5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column home_avg_ga_last5
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 79750faa-c704-45ff-bc1d-4741c27963d1
+		summarizeBy: sum
+		sourceColumn: home_avg_ga_last5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column away_avg_ga_last5
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 9ca1f86e-08e7-4ed2-a2b3-edc6980858fa
+		summarizeBy: sum
+		sourceColumn: away_avg_ga_last5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column home_squad_avg_overall
+		dataType: double
+		sourceProviderType: double
+		lineageTag: b188c122-f244-4fe5-a786-6a48e8fc88e3
+		summarizeBy: sum
+		sourceColumn: home_squad_avg_overall
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column away_squad_avg_overall
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 32d16a21-8e72-489b-b8a6-2462438bfea0
+		summarizeBy: sum
+		sourceColumn: away_squad_avg_overall
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8a3bfbda-18eb-4a0e-8d48-19acc99c5d83
+		summarizeBy: sum
+		sourceColumn: match_year
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_fact_matches = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-47da612b-138b.cloud.databricks.com", "/sql/1.0/warehouses/6de7196b84c83abb", [Catalog=null, Database=null, QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation="2.0", MetricViewBiCompatibilityMode=null]),
+				    workspace_Database = Source{[Name="workspace",Kind="Database"]}[Data],
+				    default_Schema = workspace_Database{[Name="default",Kind="Schema"]}[Data],
+				    gold_fact_matches_Table = default_Schema{[Name="gold_fact_matches",Kind="Table"]}[Data]
+				in
+				    gold_fact_matches_Table
+
+	annotation PBI_ResultType = Table
+

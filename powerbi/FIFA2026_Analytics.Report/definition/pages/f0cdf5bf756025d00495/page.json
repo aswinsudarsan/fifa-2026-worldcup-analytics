@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "f0cdf5bf756025d00495",
+  "displayName": "WC 2026 Predictions",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

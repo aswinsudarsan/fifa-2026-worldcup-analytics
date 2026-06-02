@@ -1,0 +1,131 @@
+table gold_team_performance
+	lineageTag: 60e41612-bc2a-4b00-a9a7-a7e2ba88e5fb
+
+	measure 'Total Teams' = COUNTROWS(gold_team_performance)
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m005-total-teams
+
+	measure 'Selected Matches' = SUM(gold_team_performance[matches])
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m006-sel-matches
+
+	measure 'Selected Wins' = SUM(gold_team_performance[wins])
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m007-sel-wins
+
+	measure 'Selected Win Pct' = AVERAGE(gold_team_performance[win_pct])
+		formatString: 0.0
+		displayFolder: KPIs
+		lineageTag: m008-sel-win-pct
+
+	measure 'Selected WC Wins' = SUM(gold_team_performance[wc_wins])
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m009-sel-wc-wins
+
+	column team
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: cb08811c-485e-412b-9be7-ca3973a591d2
+		summarizeBy: none
+		sourceColumn: team
+
+		annotation SummarizationSetBy = Automatic
+
+	column matches
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 28192a3b-0da5-491e-9321-67c30065c759
+		summarizeBy: sum
+		sourceColumn: matches
+
+		annotation SummarizationSetBy = Automatic
+
+	column wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f51baa50-922b-4908-bf46-a84c101a89b4
+		summarizeBy: sum
+		sourceColumn: wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column draws
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 89721434-1c48-4aa8-8b75-98a44f6730fc
+		summarizeBy: sum
+		sourceColumn: draws
+
+		annotation SummarizationSetBy = Automatic
+
+	column goals_for
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a683bbf6-f248-417e-b43e-ec305f99afee
+		summarizeBy: sum
+		sourceColumn: goals_for
+
+		annotation SummarizationSetBy = Automatic
+
+	column goals_against
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 81f4b518-0b93-4d8b-a219-489807124428
+		summarizeBy: sum
+		sourceColumn: goals_against
+
+		annotation SummarizationSetBy = Automatic
+
+	column win_pct
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 13081ead-7fb4-499d-be2b-b7d904926509
+		summarizeBy: sum
+		sourceColumn: win_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column wc_wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b2e36c98-9a23-414f-9cee-56a9938458ad
+		summarizeBy: sum
+		sourceColumn: wc_wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column wc_matches
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3c096602-def5-4d21-9d9e-6c71f5f03f72
+		summarizeBy: sum
+		sourceColumn: wc_matches
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_team_performance = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-47da612b-138b.cloud.databricks.com", "/sql/1.0/warehouses/6de7196b84c83abb", [Catalog=null, Database=null, QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation="2.0", MetricViewBiCompatibilityMode=null]),
+				    workspace_Database = Source{[Name="workspace",Kind="Database"]}[Data],
+				    default_Schema = workspace_Database{[Name="default",Kind="Schema"]}[Data],
+				    gold_team_performance_Table = default_Schema{[Name="gold_team_performance",Kind="Table"]}[Data]
+				in
+				    gold_team_performance_Table
+
+	annotation PBI_ResultType = Table
+

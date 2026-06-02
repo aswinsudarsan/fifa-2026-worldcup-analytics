@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "FIFA2026_Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "db418057-5e63-4915-b407-9de9cda024d2"
+  }
+}

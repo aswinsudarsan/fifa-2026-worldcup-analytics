@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "FIFA2026_Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "84322d78-7d73-4806-8081-0d1fc6c378d9"
+  }
+}
