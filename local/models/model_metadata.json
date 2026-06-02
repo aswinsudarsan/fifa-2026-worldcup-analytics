@@ -1,0 +1,22 @@
+{
+  "accuracy": 0.6069,
+  "cv_mean": 0.5927,
+  "features": [
+    "rank_diff",
+    "points_diff",
+    "home_fifa_rank",
+    "away_fifa_rank",
+    "home_form_pts_last5",
+    "away_form_pts_last5",
+    "home_form_pts_last10",
+    "away_form_pts_last10",
+    "home_avg_gf_last5",
+    "away_avg_gf_last5",
+    "home_avg_ga_last5",
+    "away_avg_ga_last5",
+    "home_squad_avg_overall",
+    "away_squad_avg_overall"
+  ],
+  "train_samples": 8435,
+  "test_samples": 2109
+}

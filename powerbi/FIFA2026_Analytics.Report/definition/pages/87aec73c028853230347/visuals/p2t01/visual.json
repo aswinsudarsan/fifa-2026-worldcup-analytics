@@ -1,0 +1,774 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "p2t01",
+  "position": {
+    "x": 560,
+    "y": 510,
+    "z": 14000,
+    "height": 530,
+    "width": 1320,
+    "tabOrder": 14000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "team"
+                }
+              },
+              "queryRef": "gold_team_performance.team",
+              "nativeQueryRef": "team"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "matches"
+                }
+              },
+              "queryRef": "gold_team_performance.matches",
+              "nativeQueryRef": "matches"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "wins"
+                }
+              },
+              "queryRef": "gold_team_performance.wins",
+              "nativeQueryRef": "wins"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "draws"
+                }
+              },
+              "queryRef": "gold_team_performance.draws",
+              "nativeQueryRef": "draws"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "Selected Losses"
+                }
+              },
+              "queryRef": "gold_team_performance.Selected Losses",
+              "nativeQueryRef": "Selected Losses"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "goals_for"
+                }
+              },
+              "queryRef": "gold_team_performance.goals_for",
+              "nativeQueryRef": "goals_for"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "goals_against"
+                }
+              },
+              "queryRef": "gold_team_performance.goals_against",
+              "nativeQueryRef": "goals_against"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "win_pct"
+                }
+              },
+              "queryRef": "gold_team_performance.win_pct",
+              "nativeQueryRef": "win_pct"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "wc_wins"
+                }
+              },
+              "queryRef": "gold_team_performance.wc_wins",
+              "nativeQueryRef": "wc_wins"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_team_performance"
+                    }
+                  },
+                  "Property": "wc_matches"
+                }
+              },
+              "queryRef": "gold_team_performance.wc_matches",
+              "nativeQueryRef": "wc_matches"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B4332'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#161F2C'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#B0BEC5'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1A2535'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {}
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B4332'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B4332'"
+                    }
+                  }
+                }
+              }
+            },
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "imageHeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "170.06027166887654D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.team"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "144.51843245998126D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.matches"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "125.4442954559489D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.wins"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "122.59259259259258D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.draws"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "133.25925620405013D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.Selected Losses"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "116.44446677098743D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.goals_for"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "142.96296296296296D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.goals_against"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "104.96298802631003D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.win_pct"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "119.81481481481481D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.wc_wins"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "107.77777777777777D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_team_performance.wc_matches"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#161F2C'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B4332'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "background": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B4332'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Team Statistics — Full Performance Record'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "26ea003f00b11e9d2490",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "team"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "32f1f1f0d27bc343a357",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "matches"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "92462d1a93e630dcc93a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "wins"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "dd60b1c982e6058c747d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "draws"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6a13db0cc8e95d702089",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "Selected Losses"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7f4badbed78ee009b9d9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "goals_for"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0936a3e1a2d0a5900db8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "goals_against"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "75c0884b9ece8e0b7948",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "win_pct"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e4b6eff47c47e9dd495c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "wc_wins"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8bd5068a1c88be1be23a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_team_performance"
+              }
+            },
+            "Property": "wc_matches"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

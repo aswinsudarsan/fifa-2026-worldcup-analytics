@@ -1,6 +1,60 @@
 table gold_fact_matches
 	lineageTag: cad4b7ca-a2a9-4398-ad67-99853d27db9d
 
+	measure 'WC 2026 - Total Teams' = 48
+		formatString: #,0
+		displayFolder: WC2026 Facts
+		lineageTag: m020-wc-teams
+
+	measure 'WC 2026 - Total Matches' = 104
+		formatString: #,0
+		displayFolder: WC2026 Facts
+		lineageTag: m021-wc-matches
+
+	measure 'WC 2026 - Host Cities' = 16
+		formatString: #,0
+		displayFolder: WC2026 Facts
+		lineageTag: m022-wc-cities
+
+	measure 'WC 2026 - Duration Days' = 39
+		formatString: #,0
+		displayFolder: WC2026 Facts
+		lineageTag: m023-wc-days
+
+	measure 'WC 2026 - Model Accuracy' = 0.614
+		formatString: 0.0%
+		displayFolder: WC2026 Facts
+		lineageTag: m024-model-acc
+
+	measure 'WC 2026 - Predicted Winner' = "Argentina"
+		displayFolder: WC2026 Facts
+		lineageTag: m025-pred-winner
+
+	measure 'WC 2026 - Predicted Finalist' = "France"
+		displayFolder: WC2026 Facts
+		lineageTag: m026-pred-finalist
+
+	measure 'WC 2026 - Dark Horse' = "Morocco"
+		displayFolder: WC2026 Facts
+		lineageTag: m027-dark-horse
+
+	measure 'Historical - Top Scorer' = "Klose 16 ⚽"
+		displayFolder: Historical Facts
+		lineageTag: m028-top-scorer
+
+	measure 'Historical - Most Titles' = "Brazil 🏆 5"
+		displayFolder: Historical Facts
+		lineageTag: m029-most-titles
+
+	measure 'Historical - Avg Goals' = 2.68
+		formatString: 0.00
+		displayFolder: Historical Facts
+		lineageTag: m030-avg-goals
+
+	measure 'Historical - Best Attendance' = "USA 1994: 3.59M"
+		displayFolder: Historical Facts
+		lineageTag: m031-attendance
+
 	measure 'Total Matches' = COUNTROWS(gold_fact_matches)
 		formatString: #,0
 		displayFolder: KPIs

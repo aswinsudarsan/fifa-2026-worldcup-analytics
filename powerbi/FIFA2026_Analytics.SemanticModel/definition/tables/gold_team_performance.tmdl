@@ -1,6 +1,16 @@
 table gold_team_performance
 	lineageTag: 60e41612-bc2a-4b00-a9a7-a7e2ba88e5fb
 
+	measure 'Selected Goals Per Match' = DIVIDE(SUM(gold_team_performance[goals_for]), SUM(gold_team_performance[matches]), 0)
+		formatString: 0.00
+		displayFolder: KPIs
+		lineageTag: m040-gpm
+
+	measure 'Selected Goals Conceded Per Match' = DIVIDE(SUM(gold_team_performance[goals_against]), SUM(gold_team_performance[matches]), 0)
+		formatString: 0.00
+		displayFolder: KPIs
+		lineageTag: m041-gcpm
+
 	measure 'Total Teams' = COUNTROWS(gold_team_performance)
 		formatString: #,0
 		displayFolder: KPIs
@@ -26,10 +36,16 @@ table gold_team_performance
 		displayFolder: KPIs
 		lineageTag: m009-sel-wc-wins
 
+	measure 'Selected Losses' = SUM(gold_team_performance[matches]) - SUM(gold_team_performance[wins]) - SUM(gold_team_performance[draws])
+		formatString: #,0
+		displayFolder: KPIs
+		lineageTag: m010-sel-losses
+
 	column team
 		dataType: string
 		sourceProviderType: nvarchar(max)
 		lineageTag: cb08811c-485e-412b-9be7-ca3973a591d2
+		dataCategory: Country
 		summarizeBy: none
 		sourceColumn: team
 
